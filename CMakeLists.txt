@@ -1,23 +1,37 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(recipe LANGUAGES C ASM)
 
-set(CMAKE_C_COMPILER arm-none-eabi-gcc)
-set(CMAKE_ASM_COMPILER arm-none-eabi-gcc)
-set(CMAKE_OBJCOPY arm-none-eabi-objcopy) 
-set(CMAKE_SIZE arm-none-eabi-size)
+set(CMAKE_BUILD_TYPE "Debug")
+
+set(GCC_PATH "/opt/gcc-arm-none-eabi-10.3-2021.10/bin")
+set(PREFIX "arm-none-eabi-")
+set(CMAKE_C_COMPILER ${GCC_PATH}/${PREFIX}gcc)
+set(CMAKE_ASM_COMPILER ${GCC_PATH}/${PREFIX}gcc)
+set(CP ${GCC_PATH}/${PREFIX}objcopy) 
+set(SZ ${GCC_PATH}/${PREFIX}size)
+
+message(STATUS "${CMAKE_C_COMPILER}")
 
 add_definitions(
--DUSE_HAL_DRIVER
--DSTM32F103xB
+    -DUSE_HAL_DRIVER
+    -DSTM32F103xB
 )
 
 
-set(MCU_FLAGS "-mcpu=cortex-m3 -mthumb")
-set(CMAKE_C_FLAGS "${MCU_FLAGS} -w -Wno-unknown-pragmas")
-set(CMAKE_C_FLAGS_DEBUG "-O0 -g2 -ggdb")
-set(CMAKE_C_FLAGS_RELEASE "-O3")
+set(CPU "-mcpu=cortex-m3")
+# set(FPU "")
+# set(FLOAT-AB "")
+set(MCU "${CPU} -mthumb ${FPU} ${FLOAT-ABI}")
+message(STATUS "${MCU}")
 
-SET(CMAKE_ASM_FLAGS "-mcpu=cortex-m3 -mthumb  -x assembler-with-cpp -Wall -fdata-sections -ffunction-sections")
+set(OPT "-Og")
+set(CMAKE_C_FLAGS "${MCU} ${OPT} -Wall -fdata-sections -ffunction-sections")
+set(CMAKE_C_FLAGS_DEBUG "-g -gdwarf-2")
+set(CMAKE_C_FLAGS_RELEASE "")
+message(STATUS "${CMAKE_C_FLAGS}")
+
+SET(CMAKE_ASM_FLAGS "${MCU} ${OPT} -x assembler-with-cpp -Wall -fdata-sections -ffunction-sections")
+message(STATUS "${CMAKE_ASM_FLAGS}")
 
 include_directories(
     commponents/STM32Cube_FW_F1_V1.8.0/Drivers/STM32F1xx_HAL_Driver/Inc
@@ -43,9 +57,11 @@ add_library(stm32_lib
     commponents/STM32Cube_FW_F1_V1.8.0/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
 )
 
-set(LINKER_SCRIPT /root/mcu_cmake/example/STM32F103CBTx_FLASH.ld)
+set(LDSCRIPT /root/mcu_cmake/example/STM32F103CBTx_FLASH.ld)
+set(LIBS "-lc -lm -lnosys")
+# set(LIBDIR "")
 set(CMAKE_EXE_LINKER_FLAGS
-"-mcpu=cortex-m3 -mthumb -specs=nano.specs -T${LINKER_SCRIPT} -lc -lm -lnosys -Wl,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map,--cref -Wl,--gc-sections"
+    "${MCU} -specs=nano.specs -T${LDSCRIPT} ${LIBS} ${LIBDIR} -Wl,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map,--cref -Wl,--gc-sections"
 )
 
 add_executable(${PROJECT_NAME}.elf 
@@ -58,3 +74,20 @@ add_executable(${PROJECT_NAME}.elf
 target_link_libraries(${PROJECT_NAME}.elf
     stm32_lib   
 )
+
+set(ELF_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf)
+set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
+set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
+message(STATUS "PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
+message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
+
+add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
+    COMMAND ${SZ} --format=berkeley ${PROJECT_NAME}.elf
+    COMMAND ${CP} -O ihex ${ELF_FILE} ${HEX_FILE}
+    COMMAND ${CP} -O binary -S ${ELF_FILE} ${BIN_FILE}
+    COMMENT "Building ${PROJECT_NAME}.bin and ${PROJECT_NAME}.hex"
+
+    # COMMAND ${CMAKE_COMMAND} -E copy ${HEX_FILE} "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.hex"
+    # COMMAND ${CMAKE_COMMAND} -E copy ${BIN_FILE} "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.bin"
+)
+
