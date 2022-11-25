@@ -1,0 +1,23 @@
+{ 
+   "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "executable": "${workspaceFolder}/build/recipe.elf",
+            "name": "Debug with JLink",
+            "request": "launch",
+            "type": "cortex-debug",
+            "device": "STM32F103CB",
+            "runToEntryPoint": "main",
+            "showDevDebugOutput": "none",
+            "servertype": "external",
+
+            "gdbTarget": "192.168.2.2:2331",
+            "serverpath": "gdb-multiarch",
+            "serverArgs": [],
+            "ipAddress": "192.168.2.2",
+            "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
+            "gdbPath": "gdb-multiarch"
+        }
+    ]
+}
