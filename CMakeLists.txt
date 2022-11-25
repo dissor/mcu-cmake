@@ -1,43 +1,21 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
 project(recipe LANGUAGES C ASM)
 
+# 生成compile_commands.json文件
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # 编译模式
 set(CMAKE_BUILD_TYPE "Debug")
 
-# 工具链
-set(GCC_PATH "/opt/gcc-arm-none-eabi-10.3-2021.10/bin")
-set(PREFIX "arm-none-eabi-")
-set(CMAKE_C_COMPILER ${GCC_PATH}/${PREFIX}gcc)
-set(CMAKE_ASM_COMPILER ${GCC_PATH}/${PREFIX}gcc)
-
-# 生成工具
-set(CP ${GCC_PATH}/${PREFIX}objcopy)
-set(SZ ${GCC_PATH}/${PREFIX}size)
-
-message(STATUS "${CMAKE_C_COMPILER}")
+# 导入子模块
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+include(arm-none-eabi-gcc)
 
 # 宏定义
 add_definitions(
     -DUSE_HAL_DRIVER
     -DSTM32F103xB
 )
-
-# 编译选项
-set(CPU "-mcpu=cortex-m3")
-
-# set(FPU "")
-# set(FLOAT-AB "")
-set(MCU "${CPU} -mthumb ${FPU} ${FLOAT-ABI}")
-message(STATUS "${MCU}")
-
-# set(OPT "-Og")
-set(CMAKE_C_FLAGS "${MCU} ${OPT} -Wall -fdata-sections -ffunction-sections -g -gdwarf-2")
-set(CMAKE_C_FLAGS_DEBUG "-g -gdwarf-2")
-set(CMAKE_C_FLAGS_RELEASE "")
-message(STATUS "${CMAKE_C_FLAGS}")
-
-SET(CMAKE_ASM_FLAGS "${MCU} ${OPT} -x assembler-with-cpp -Wall -fdata-sections -ffunction-sections")
-message(STATUS "${CMAKE_ASM_FLAGS}")
 
 # TODO：模块芯片库
 set(STM32F1xx_LIB "commponents/STM32Cube_FW_F1_V1.8.0")
