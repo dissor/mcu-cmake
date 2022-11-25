@@ -25,7 +25,7 @@ include_directories(
     ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
     ${STM32F1xx_LIB}/Drivers/CMSIS/Device/ST/STM32F1xx/Include
     ${STM32F1xx_LIB}/Drivers/CMSIS/Include
-    example/hello_cmake/Inc
+    examples/hello_cmake/Inc
 )
 
 add_library(stm32_lib
@@ -45,7 +45,7 @@ add_library(stm32_lib
 )
 
 # 链接脚本
-set(LDSCRIPT /root/mcu_cmake/example/hello_cmake/STM32F103CBTx_FLASH.ld)
+set(LDSCRIPT /root/mcu_cmake/examples/hello_cmake/STM32F103CBTx_FLASH.ld)
 set(LIBS "-lc -lm -lnosys")
 
 # set(LIBDIR "")
@@ -55,11 +55,11 @@ set(CMAKE_EXE_LINKER_FLAGS
 
 # 生成项目文件
 add_executable(${PROJECT_NAME}.elf
-    example/hello_cmake/Src/main.c
-    example/hello_cmake/Src/stm32f1xx_hal_msp.c
-    example/hello_cmake/Src/stm32f1xx_it.c
-    example/hello_cmake/Src/system_stm32f1xx.c
-    example/hello_cmake/startup_stm32f103xb.s
+    examples/hello_cmake/Src/main.c
+    examples/hello_cmake/Src/stm32f1xx_hal_msp.c
+    examples/hello_cmake/Src/stm32f1xx_it.c
+    examples/hello_cmake/Src/system_stm32f1xx.c
+    examples/hello_cmake/startup_stm32f103xb.s
 )
 target_link_libraries(${PROJECT_NAME}.elf
     stm32_lib
