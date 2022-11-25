@@ -11,6 +11,9 @@ set(CMAKE_BUILD_TYPE "Debug")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(arm-none-eabi-gcc)
 
+# 导入子目录
+add_subdirectory(components)
+
 # 宏定义
 add_definitions(
     -DUSE_HAL_DRIVER
@@ -18,7 +21,7 @@ add_definitions(
 )
 
 # TODO：模块芯片库
-set(STM32F1xx_LIB "commponents/STM32Cube_FW_F1_V1.8.0")
+set(STM32F1xx_LIB "components/STM32Cube_FW_F1_V1.8.0")
 
 include_directories(
     ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Inc

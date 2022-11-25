@@ -1,0 +1,2 @@
+add_subdirectory(SEGGER_RTT_V764c)
+add_subdirectory(STM32Cube_FW_F1_V1.8.0)
