@@ -12,6 +12,7 @@ set(CMAKE_BUILD_TYPE "Debug")
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(arm-none-eabi-gcc)
 include(definitions)
+include(project-settings)
 
 
 # 链接脚本
@@ -27,7 +28,7 @@ include_directories(
 )
 
 # 生成项目文件
-add_executable(${PROJECT_NAME}.elf
+add_executable(${PROJECT_NAME}.elf 
     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/main.c
     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_hal_msp.c
     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_it.c
@@ -53,5 +54,7 @@ add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
 # 导入子目录
 add_subdirectory(examples)
 add_subdirectory(components)
+add_subdirectory(projects)
 
-# message(STATUS "TOP FILE: ${CMAKE_ASM_FLAGS}")
+# file(READ ${PROJECT_BINARY_DIR}/CE_SHI DDDDDDS)
+# message(STATUS "[${CMAKE_CURRENT_LIST_FILE}](${CMAKE_CURRENT_LIST_LINE}): ${DDDDDDS}")
