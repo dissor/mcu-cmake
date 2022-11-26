@@ -1,0 +1,1 @@
+# message(STATUS "here is components: ${ELF_FILE}")

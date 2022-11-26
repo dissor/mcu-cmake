@@ -7,23 +7,15 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 编译模式
 set(CMAKE_BUILD_TYPE "Debug")
 
-# 生成输出文件
-set(ELF_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf)
-set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
-set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
 # 导入子模块
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(arm-none-eabi-gcc)
+include(definitions)
 
-# 宏定义
-add_definitions(
-    -DUSE_HAL_DRIVER
-    -DSTM32F103xB
-)
 
 # 链接脚本
-set(LDSCRIPT /root/mcu_cmake/examples/hello_cmake/STM32F103CBTx_FLASH.ld)
+set(LDSCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/STM32F103CBTx_FLASH.ld)
 set(LIBS "-lc -lm -lnosys")
 # set(LIBDIR "")
 set(CMAKE_EXE_LINKER_FLAGS
@@ -31,20 +23,25 @@ set(CMAKE_EXE_LINKER_FLAGS
 )
 
 include_directories(
-    examples/hello_cmake/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Inc
 )
 
 # 生成项目文件
 add_executable(${PROJECT_NAME}.elf
-    examples/hello_cmake/Src/main.c
-    examples/hello_cmake/Src/stm32f1xx_hal_msp.c
-    examples/hello_cmake/Src/stm32f1xx_it.c
-    examples/hello_cmake/Src/system_stm32f1xx.c
-    examples/hello_cmake/startup_stm32f103xb.s
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_hal_msp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_it.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/system_stm32f1xx.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/startup_stm32f103xb.s
 )
 target_link_libraries(${PROJECT_NAME}.elf
     stm32_lib
 )
+
+# 生成输出文件
+set(ELF_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf)
+set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
+set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
 add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
     COMMAND ${SZ} --format=berkeley ${PROJECT_NAME}.elf
@@ -54,5 +51,7 @@ add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
 )
 
 # 导入子目录
+add_subdirectory(examples)
 add_subdirectory(components)
 
+# message(STATUS "TOP FILE: ${CMAKE_ASM_FLAGS}")
