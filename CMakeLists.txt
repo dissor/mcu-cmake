@@ -7,12 +7,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # 编译模式
 set(CMAKE_BUILD_TYPE "Debug")
 
+# 生成输出文件
+set(ELF_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf)
+set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
+set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
+
 # 导入子模块
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 include(arm-none-eabi-gcc)
-
-# 导入子目录
-add_subdirectory(components)
 
 # 宏定义
 add_definitions(
@@ -20,40 +22,16 @@ add_definitions(
     -DSTM32F103xB
 )
 
-# TODO：模块芯片库
-set(STM32F1xx_LIB "components/STM32Cube_FW_F1_V1.8.0")
-
-include_directories(
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Inc
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Inc/Legacy
-    ${STM32F1xx_LIB}/Drivers/CMSIS/Device/ST/STM32F1xx/Include
-    ${STM32F1xx_LIB}/Drivers/CMSIS/Include
-    examples/hello_cmake/Inc
-)
-
-add_library(stm32_lib
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio_ex.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_tim_ex.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_rcc_ex.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_gpio.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_dma.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_cortex.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_pwr.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_flash_ex.c
-    ${STM32F1xx_LIB}/Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_exti.c
-)
-
 # 链接脚本
 set(LDSCRIPT /root/mcu_cmake/examples/hello_cmake/STM32F103CBTx_FLASH.ld)
 set(LIBS "-lc -lm -lnosys")
-
 # set(LIBDIR "")
 set(CMAKE_EXE_LINKER_FLAGS
     "${MCU} -specs=nano.specs -T${LDSCRIPT} ${LIBS} ${LIBDIR} -Wl,-Map=${PROJECT_BINARY_DIR}/${PROJECT_NAME}.map,--cref -Wl,--gc-sections"
+)
+
+include_directories(
+    examples/hello_cmake/Inc
 )
 
 # 生成项目文件
@@ -68,19 +46,13 @@ target_link_libraries(${PROJECT_NAME}.elf
     stm32_lib
 )
 
-# 生成输出文件
-set(ELF_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.elf)
-set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
-set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
-message(STATUS "PROJECT_BINARY_DIR: ${PROJECT_BINARY_DIR}")
-message(STATUS "CMAKE_CURRENT_BINARY_DIR: ${CMAKE_CURRENT_BINARY_DIR}")
-
 add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
     COMMAND ${SZ} --format=berkeley ${PROJECT_NAME}.elf
     COMMAND ${CP} -O ihex ${ELF_FILE} ${HEX_FILE}
     COMMAND ${CP} -O binary -S ${ELF_FILE} ${BIN_FILE}
     COMMENT "Building ${PROJECT_NAME}.bin and ${PROJECT_NAME}.hex"
-
-    # COMMAND ${CMAKE_COMMAND} -E copy ${HEX_FILE} "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.hex"
-    # COMMAND ${CMAKE_COMMAND} -E copy ${BIN_FILE} "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}.bin"
 )
+
+# 导入子目录
+add_subdirectory(components)
+
