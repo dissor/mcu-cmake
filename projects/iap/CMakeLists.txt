@@ -17,8 +17,11 @@ set(ELF_FILE ${PROJECT_NAME}.elf)
 set(HEX_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.hex)
 set(BIN_FILE ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.bin)
 
-add_custom_command(TARGET "${PROJECT_NAME}.elf" POST_BUILD
+add_custom_command(TARGET "${PROJECT_NAME}.elf" 
+POST_BUILD
     COMMAND ${SZ} --format=berkeley ${PROJECT_NAME}.elf
+    COMMAND ${CMAKE_COMMAND} -E copy ${PROJECT_NAME}.elf ${PROJECT_BINARY_DIR}/mcu_out.elf
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/cube/STM32F103xx.svd ${PROJECT_BINARY_DIR}/mcu_out.svd
     COMMAND ${CP} -O ihex ${ELF_FILE} ${HEX_FILE}
     COMMAND ${CP} -O binary -S ${ELF_FILE} ${BIN_FILE}
     COMMENT "Building ${PROJECT_NAME}.bin and ${PROJECT_NAME}.hex"

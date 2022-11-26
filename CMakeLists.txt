@@ -16,7 +16,7 @@ include(project-settings)
 
 
 # # 链接脚本
-# set(LDSCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/STM32F103CBTx_FLASH.ld)
+# set(LDSCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/STM32F103CBTx_FLASH.ld)
 # set(LIBS "-lc -lm -lnosys")
 # # set(LIBDIR "")
 # set(CMAKE_EXE_LINKER_FLAGS
@@ -24,18 +24,18 @@ include(project-settings)
 # )
 
 # include_directories(
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Inc
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/Inc
 # )
 
 
 
 # # 生成项目文件
 # add_executable(${PROJECT_NAME}.elf 
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/main.c
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_hal_msp.c
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/stm32f1xx_it.c
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/Src/system_stm32f1xx.c
-#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/hello_cmake/startup_stm32f103xb.s
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/cube/Core/Src/main.c
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/cube/Core/Src/stm32f1xx_hal_msp.c
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/cube/Core/Src/stm32f1xx_it.c
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/cube/Core/Src/system_stm32f1xx.c
+#     ${CMAKE_CURRENT_SOURCE_DIR}/examples/demo/cube/startup_stm32f103xb.s
 # )
 # target_link_libraries(${PROJECT_NAME}.elf
 #     stm32_lib

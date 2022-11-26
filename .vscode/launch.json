@@ -3,7 +3,7 @@
     "configurations": [
         {
             "cwd": "${workspaceFolder}",
-            "executable": "${workspaceFolder}/build/recipe.elf",
+            "executable": "${workspaceFolder}/build/mcu_out.elf",
             "name": "Debug with JLink",
             "request": "launch",
             "type": "cortex-debug",
@@ -14,7 +14,7 @@
 
             "gdbTarget": "192.168.2.2:2331",
             "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
-            "svdFile": "${workspaceFolder}/example/hello_cmake/STM32F103xx.svd",
+            "svdFile": "${workspaceFolder}/build/mcu_out.svd",
         }
     ]
 }
