@@ -2,18 +2,18 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "cmake",
-			"label": "CMake: build",
-			"command": "build",
-			"targets": [
-				"all"
-			],
+			"type": "shell",
+			"label": "build",
+			"command": "cd build; cmake -G Ninja ..; ninja",
 			"group": {
 				"kind": "build",
 				"isDefault": true
-			},
-			"problemMatcher": [],
-			"detail": "CMake template build task"
+			}
+		},
+		{
+			"type": "shell",
+			"label": "clean rebuild",
+			"command": "cd build; rm -r *; cmake -G Ninja ..; ninja",
 		}
 	]
 }
