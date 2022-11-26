@@ -3,17 +3,20 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "build",
+			"label": "BUILD",
 			"command": "cd build; cmake -G Ninja ..; ninja",
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"type": "shell",
+			"label": "REBUILD",
+			"command": "rm -r build; cmake -G Ninja -H. -Bbuild; cmake --build build",
+			"problemMatcher": [],
 			"group": {
 				"kind": "build",
 				"isDefault": true
 			}
-		},
-		{
-			"type": "shell",
-			"label": "clean rebuild",
-			"command": "cd build; rm -r *; cmake -G Ninja ..; ninja",
 		}
 	]
 }
