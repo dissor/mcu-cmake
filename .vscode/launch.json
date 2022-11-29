@@ -12,7 +12,7 @@
             "showDevDebugOutput": "none",
             "servertype": "external",
 
-            "gdbTarget": "192.168.2.2:2331",
+            "gdbTarget": "192.168.2.4:2331",
             "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
             "svdFile": "${workspaceFolder}/build/mcu_out.svd",
         }

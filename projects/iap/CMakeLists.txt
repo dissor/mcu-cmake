@@ -10,6 +10,7 @@ add_executable(${PROJECT_NAME}.elf
 )
 target_link_libraries(${PROJECT_NAME}.elf
     stm32_lib
+    segger_rtt
 )
 
 # 生成输出文件
