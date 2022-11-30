@@ -13,7 +13,19 @@
             "servertype": "jlink",
             // "interface": "swd",
             "ipAddress": "192.168.2.4",
-            "svdFile": "${workspaceFolder}/build/mcu_out.svd"
+            "svdFile": "${workspaceFolder}/build/mcu_out.svd",
+            "rttConfig": {
+                "enabled": true,
+                "address": "auto",
+                "decoders": [
+                    {
+                        "label": "",
+                        "port": 0,
+                        "type": "console",
+                        "timestamp": true
+                    }
+                ]
+            }
         }
     ]
 }
