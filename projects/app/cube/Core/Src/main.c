@@ -60,10 +60,6 @@ static void MX_GPIO_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#define APPLICATION_ADDRESS (uint32_t)0x08002000
-typedef void (*pFunction)(void);
-pFunction JumpToApplication;
-uint32_t JumpAddress;
 
 /* USER CODE END 0 */
 
@@ -96,19 +92,6 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-  printf("this is iap\r\n");
-  HAL_Delay(100);
-
-  /* Test if user code is programmed starting from address "APPLICATION_ADDRESS" */
-  if (((*(__IO uint32_t *)APPLICATION_ADDRESS) & 0x2FFE0000) == 0x20000000)
-  {
-    /* Jump to user application */
-    JumpAddress = *(__IO uint32_t *)(APPLICATION_ADDRESS + 4);
-    JumpToApplication = (pFunction)JumpAddress;
-    /* Initialize user application's Stack Pointer */
-    __set_MSP(*(__IO uint32_t *)APPLICATION_ADDRESS);
-    JumpToApplication();
-  }
 
   /* USER CODE END 2 */
 
@@ -120,7 +103,7 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     // SEGGER_RTT_printf(0, "JJJJJJJJ\r\n");
-    printf("JJJJJJJJ\r\n");
+    printf("this is app\r\n");
     HAL_Delay(1000);
   }
   /* USER CODE END 3 */
