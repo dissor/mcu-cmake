@@ -20,7 +20,7 @@ set(CPU "-mcpu=cortex-m3")
 # set(FLOAT-AB "")
 set(MCU "${CPU} -mthumb ${FPU} ${FLOAT-ABI}")
 
-# set(OPT "-Og")
+set(OPT "-Og")
 set(CMAKE_C_FLAGS "${MCU} ${OPT} -Wall -fdata-sections -ffunction-sections")
 set(CMAKE_C_FLAGS_DEBUG "-g -gdwarf-2")
 set(CMAKE_C_FLAGS_RELEASE "")
