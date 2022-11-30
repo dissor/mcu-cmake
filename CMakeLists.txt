@@ -1,4 +1,8 @@
 cmake_minimum_required(VERSION 3.5 FATAL_ERROR)
+
+# Win 平台必须放在 project language 前
+set(CMAKE_SYSTEM_NAME Generic)
+
 project(recipe LANGUAGES C ASM)
 
 # 生成compile_commands.json文件

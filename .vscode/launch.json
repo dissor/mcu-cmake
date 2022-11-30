@@ -7,14 +7,15 @@
             "name": "Debug with JLink",
             "request": "launch",
             "type": "cortex-debug",
-            "device": "",
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
-            "servertype": "external",
+            "device": "STM32F103CB",
+            "servertype": "jlink",
+            "interface": "swd"
 
-            "gdbTarget": "192.168.2.4:2331",
-            "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
-            "svdFile": "${workspaceFolder}/build/mcu_out.svd",
+            // "gdbTarget": "192.168.2.4:2331",
+            // // "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
+            // "svdFile": "${workspaceFolder}/build/mcu_out.svd",
         }
     ]
 }
