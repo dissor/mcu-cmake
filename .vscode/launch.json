@@ -11,11 +11,9 @@
             "showDevDebugOutput": "none",
             "device": "STM32F103CB",
             "servertype": "jlink",
-            "interface": "swd"
-
-            // "gdbTarget": "192.168.2.4:2331",
-            // // "armToolchainPath": "/opt/gcc-arm-none-eabi-10.3-2021.10/bin",
-            // "svdFile": "${workspaceFolder}/build/mcu_out.svd",
+            // "interface": "swd",
+            "ipAddress": "192.168.2.4",
+            "svdFile": "${workspaceFolder}/build/mcu_out.svd"
         }
     ]
 }
