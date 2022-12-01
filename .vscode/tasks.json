@@ -11,7 +11,7 @@
 		{
 			"type": "shell",
 			"label": "REBUILD",
-			"command": "rm -r build; cmake -G Ninja -H. -Bbuild; cmake --build build",
+			"command": "rm -r build; cmake -G Ninja -Bbuild; cmake --build build",
 			"problemMatcher": [],
 			"group": {
 				"kind": "build",
