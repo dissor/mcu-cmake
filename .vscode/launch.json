@@ -10,9 +10,13 @@
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
             "device": "STM32F103ZE",
-            "servertype": "jlink",
+            "servertype": "openocd",
+            "configFiles": [
+                "interface/stlink.cfg",
+                "target/stm32f1x.cfg"
+            ],
             // "interface": "swd",
-            "ipAddress": "192.168.2.4",
+            // "ipAddress": "192.168.2.4",
             "svdFile": "${workspaceFolder}/build/mcu_out.svd",
             "rttConfig": {
                 "enabled": true,
