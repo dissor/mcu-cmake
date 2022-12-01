@@ -9,7 +9,7 @@
             "type": "cortex-debug",
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
-            "device": "STM32F103CB",
+            "device": "STM32F103ZE",
             "servertype": "jlink",
             // "interface": "swd",
             "ipAddress": "192.168.2.4",

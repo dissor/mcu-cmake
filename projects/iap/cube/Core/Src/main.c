@@ -94,21 +94,38 @@ int main(void)
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
+  // MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
   printf("this is iap\r\n");
   HAL_Delay(100);
 
+  void (*p)(uint32_t) =  HAL_Delay;
+
+  GPIO_InitTypeDef gpio_init;
+  __HAL_RCC_GPIOE_CLK_ENABLE();
+  gpio_init.Mode = GPIO_MODE_OUTPUT_PP;
+  gpio_init.Pull = GPIO_PULLUP;
+  gpio_init.Speed = GPIO_SPEED_FREQ_HIGH;
+  gpio_init.Pin = GPIO_PIN_6 | GPIO_PIN_5;
+  HAL_GPIO_Init(GPIOE, &gpio_init);
+
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_6, GPIO_PIN_RESET);
+
+  // SET(RCC->APB2ENR, IOPEEN);
+  
+
+  // RCC_DeInit();
+
   /* Test if user code is programmed starting from address "APPLICATION_ADDRESS" */
-  if (((*(__IO uint32_t *)APPLICATION_ADDRESS) & 0x2FFE0000) == 0x20000000)
-  {
-    /* Jump to user application */
-    JumpAddress = *(__IO uint32_t *)(APPLICATION_ADDRESS + 4);
-    JumpToApplication = (pFunction)JumpAddress;
-    /* Initialize user application's Stack Pointer */
-    __set_MSP(*(__IO uint32_t *)APPLICATION_ADDRESS);
-    JumpToApplication();
-  }
+  // if (((*(__IO uint32_t *)APPLICATION_ADDRESS) & 0x2FFE0000) == 0x20000000)
+  // {
+  //   /* Jump to user application */
+  //   JumpAddress = *(__IO uint32_t *)(APPLICATION_ADDRESS + 4);
+  //   JumpToApplication = (pFunction)JumpAddress;
+  //   /* Initialize user application's Stack Pointer */
+  //   __set_MSP(*(__IO uint32_t *)APPLICATION_ADDRESS);
+  //   JumpToApplication();
+  // }
 
   /* USER CODE END 2 */
 
@@ -120,8 +137,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
     // SEGGER_RTT_printf(0, "JJJJJJJJ\r\n");
+    HAL_GPIO_TogglePin(GPIOE, GPIO_PIN_6);
     printf("JJJJJJJJ\r\n");
-    HAL_Delay(1000);
+    p(1000);
   }
   /* USER CODE END 3 */
 }
